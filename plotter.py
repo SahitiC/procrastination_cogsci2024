@@ -14,5 +14,7 @@ custom_lines = [Line2D([0], [0], color='indigo', lw=2),
 
 fig, ax = plt.subplots(figsize=(1, 1), dpi=100)
 ax.axis('off')
-ax.legend(custom_lines, ['1.0', '0.9', '0.6'], title=r'$\gamma$',
+ax.legend(custom_lines, ['1.0',
+                         '0.6',
+                         '0.3'], title='$\eta$',
           frameon=False)

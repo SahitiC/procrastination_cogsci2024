@@ -191,9 +191,11 @@ plt.ylabel('research hours completed')
 reward_interest = 2.0
 efficacy = 0.5
 colors = ['indigo', 'tab:blue', 'orange']
+plt.figure(figsize=(5, 4), dpi=100)
 
 T = get_transitions_interest_states(STATES, STATES_NO, ACTIONS_BASE,
                                     efficacy, P_STAY, 1-P_STAY)
+
 
 total_reward_func, total_reward_func_last = generate_interest_rewards(
     STATES, STATES_NO, ACTIONS_BASE, REWARD_SHIRK, REWARD_UNIT,

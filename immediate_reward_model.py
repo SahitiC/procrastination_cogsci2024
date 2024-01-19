@@ -4,7 +4,7 @@ import task_structure
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 14
+mpl.rcParams['font.size'] = 16
 mpl.rcParams['lines.linewidth'] = 2
 
 # %%
@@ -33,7 +33,7 @@ ACTIONS = [np.arange(STATES_NO-i) for i in range(STATES_NO)]
 
 HORIZON = 15  # no. of weeks for task
 DISCOUNT_FACTOR = 0.9  # discounting factor
-EFFICACY = 0.9  # self-efficacy (probability of progress for each unit)
+EFFICACY = 0.8  # self-efficacy (probability of progress for each unit)
 
 # utilities :
 REWARD_THR = 4.0  # reward per unit at threshold (14 units)
@@ -101,13 +101,11 @@ EXPONENT = 2.0  # to make effort function more convex
 initial_state = 0
 beta = 7
 
-colors = ['tab:blue', 'orange']
-lines = ['solid', 'dashed']
+colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=100)
 
-discount_factors = [0.9, 0.6]
-exponents = [2.0, 2.8
-             ]
+discount_factor = 0.6
+exponents = [1.5, 2.2]
 
 for i_exp, exponent in enumerate(exponents):
 
@@ -126,22 +124,56 @@ for i_exp, exponent in enumerate(exponents):
         total_reward_func.append(reward_func[state_current]
                                  + effort_func[state_current])
 
-    for i_dis, discount_factor in enumerate(discount_factors):
+    T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
 
-        T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
+    V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
+        STATES, ACTIONS, HORIZON, discount_factor,
+        total_reward_func, total_reward_func_last, T)
 
-        V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
-            STATES, ACTIONS, HORIZON, discount_factor,
-            total_reward_func, total_reward_func_last, T)
+    for i in range(5):
 
-        for i in range(3):
+        s, a = mdp_algms.forward_runs_prob(
+            softmax_policy, Q_values, ACTIONS, initial_state,
+            HORIZON, STATES, T, beta)
+        plt.plot(s/2, color=colors[i_exp])
 
-            s, a = mdp_algms.forward_runs_prob(
-                softmax_policy, Q_values, ACTIONS, initial_state,
-                HORIZON, STATES, T, beta)
-            plt.plot(s/2, color=colors[i_dis], linestyle=lines[i_exp])
+    sns.despine()
 
-        sns.despine()
+
+# higher discount factor
+
+discount_factor = 0.9
+exponent = 2.2
+
+reward_func = task_structure.reward_threshold(
+    STATES, ACTIONS, REWARD_SHIRK, REWARD_THR, REWARD_EXTRA)
+
+effort_func = task_structure.effort_convex_concave(STATES, ACTIONS,
+                                                   EFFORT_WORK, exponent)
+
+total_reward_func_last = np.zeros(len(STATES))
+
+# total reward = reward+effort
+total_reward_func = []
+for state_current in range(len(STATES)):
+
+    total_reward_func.append(reward_func[state_current]
+                             + effort_func[state_current])
+
+T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
+
+V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
+    STATES, ACTIONS, HORIZON, discount_factor,
+    total_reward_func, total_reward_func_last, T)
+
+for i in range(5):
+
+    s, a = mdp_algms.forward_runs_prob(
+        softmax_policy, Q_values, ACTIONS, initial_state,
+        HORIZON, STATES, T, beta)
+    plt.plot(s/2, color='orange')
+
+sns.despine()
 
 plt.xlabel('time (weeks)')
 plt.ylabel('research hours completed')

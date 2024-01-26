@@ -1,11 +1,12 @@
 import seaborn as sns
 import mdp_algms
 import task_structure
+import plotter
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 mpl.rcParams['font.size'] = 16
-mpl.rcParams['lines.linewidth'] = 2
+mpl.rcParams['lines.linewidth'] = 3
 
 # %%
 
@@ -80,15 +81,18 @@ for i_efficacy, efficacy in enumerate(efficacies):
         STATES, ACTIONS, HORIZON, discount_factor,
         total_reward_func, total_reward_func_last, T)
 
-    for i in range(5):
+    trajectories = []
+    for i in range(100):
 
         s, a = mdp_algms.forward_runs_prob(
             softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
             T, beta)
-        plt.plot(s/2, color=colors[i_efficacy])
+        trajectories.append(s[1:]/2)
 
-    sns.despine()
+    plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON)
+    plotter.example_trajectories(trajectories, colors[i_efficacy], 5)
 
+sns.despine()
 plt.xlabel('time (weeks)')
 plt.ylabel('research hours completed')
 

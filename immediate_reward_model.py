@@ -1,11 +1,12 @@
 import seaborn as sns
 import mdp_algms
 import task_structure
+import plotter
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 mpl.rcParams['font.size'] = 16
-mpl.rcParams['lines.linewidth'] = 2
+mpl.rcParams['lines.linewidth'] = 3
 
 # %%
 
@@ -64,13 +65,13 @@ T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
 # %%
 # base policy with single discount factor
 
-discount_factors = [1.0, 0.9, 0.6]
+discount_factors = [1.0, 0.9]
 
 initial_state = 0
 beta = 7
 
 colors = ['indigo', 'tab:blue', 'orange']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
 for i_dis, discount_factor in enumerate(discount_factors):
 
@@ -80,17 +81,26 @@ for i_dis, discount_factor in enumerate(discount_factors):
         STATES, ACTIONS, HORIZON, discount_factor,
         total_reward_func, total_reward_func_last, T)
 
-    for i in range(5):
+    trajectories = []
+    for i in range(1000):
 
         s, a = mdp_algms.forward_runs_prob(
             softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
             T, beta)
-        plt.plot(s/2, color=colors[i_dis])
+        trajectories.append(s/2)
 
-    sns.despine()
+    plotter.sausage_plots(trajectories, colors[i_dis], HORIZON)
+    plotter.example_trajectories(trajectories, colors[i_dis], 1.5, 3)
+
+sns.despine()
 
 plt.xlabel('time (weeks)')
 plt.ylabel('research hours completed')
+
+plt.savefig(
+    'plots/vectors/no_delay_discounts.svg',
+    format='svg', dpi=300,  bbox_inches='tight'
+)
 
 
 # %%
@@ -102,7 +112,7 @@ initial_state = 0
 beta = 7
 
 colors = ['indigo', 'tab:blue', 'orange']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
 discount_factor = 0.6
 exponents = [1.5, 2.2]
@@ -130,14 +140,18 @@ for i_exp, exponent in enumerate(exponents):
         STATES, ACTIONS, HORIZON, discount_factor,
         total_reward_func, total_reward_func_last, T)
 
-    for i in range(5):
+    trajectories = []
+    for i in range(1000):
 
         s, a = mdp_algms.forward_runs_prob(
-            softmax_policy, Q_values, ACTIONS, initial_state,
-            HORIZON, STATES, T, beta)
-        plt.plot(s/2, color=colors[i_exp])
+            softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
+            T, beta)
+        trajectories.append(s/2)
 
-    sns.despine()
+    plotter.sausage_plots(trajectories, colors[i_exp], HORIZON)
+    plotter.example_trajectories(trajectories, colors[i_exp], 1.5, 3)
+
+sns.despine()
 
 
 # higher discount factor
@@ -166,14 +180,23 @@ V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
     STATES, ACTIONS, HORIZON, discount_factor,
     total_reward_func, total_reward_func_last, T)
 
-for i in range(5):
+trajectories = []
+for i in range(1000):
 
     s, a = mdp_algms.forward_runs_prob(
-        softmax_policy, Q_values, ACTIONS, initial_state,
-        HORIZON, STATES, T, beta)
-    plt.plot(s/2, color='orange')
+        softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
+        T, beta)
+    trajectories.append(s/2)
+
+plotter.sausage_plots(trajectories, colors[i_exp+1], HORIZON)
+plotter.example_trajectories(trajectories, colors[i_exp+1], 1.5, 3)
 
 sns.despine()
 
 plt.xlabel('time (weeks)')
 plt.ylabel('research hours completed')
+
+plt.savefig(
+    'plots/vectors/no_delay_convexity.svg',
+    format='svg', dpi=300,  bbox_inches='tight'
+)

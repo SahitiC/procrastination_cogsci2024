@@ -5,7 +5,7 @@ import task_structure
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 14
+mpl.rcParams['font.size'] = 16
 mpl.rcParams['lines.linewidth'] = 2
 
 # %%
@@ -36,7 +36,7 @@ ACTIONS.extend(ACTIONS_BASE)
 
 HORIZON = 15  # no. of weeks for task
 DISCOUNT_FACTOR = 1.0  # discounting factor
-EFFICACY = 0.7  # self-efficacy (probability of progress for each unit)
+EFFICACY = 0.6  # self-efficacy (probability of progress for each unit)
 P_STAY = 0.95  # probability of switching between reward states
 
 # utilities :
@@ -190,7 +190,7 @@ plt.ylabel('research hours completed')
 # for switchy transitions
 reward_interest = 2.0
 efficacy = 0.5
-colors = ['indigo', 'tab:blue', 'orange']
+colors = ['hotpink', 'mediumturquoise', 'goldenrod']
 plt.figure(figsize=(5, 4), dpi=100)
 
 T = get_transitions_interest_states(STATES, STATES_NO, ACTIONS_BASE,

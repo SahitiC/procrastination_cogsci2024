@@ -35,7 +35,7 @@ ACTIONS = [np.arange(STATES_NO-i) for i in range(STATES_NO)]
 
 HORIZON = 16  # no. of weeks for task
 DISCOUNT_FACTOR = 0.9  # discounting factor
-EFFICACY = 0.7  # self-efficacy (probability of progress for each unit)
+EFFICACY = 0.8  # self-efficacy (probability of progress for each unit)
 
 # utilities :
 REWARD_THR = 4.0  # reward per unit at threshold (14 units)
@@ -71,7 +71,7 @@ initial_state = 0
 beta = 7
 
 colors = ['indigo', 'tab:blue', 'orange']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
 for i_efficacy, efficacy in enumerate(efficacies):
 
@@ -82,31 +82,37 @@ for i_efficacy, efficacy in enumerate(efficacies):
         total_reward_func, total_reward_func_last, T)
 
     trajectories = []
-    for i in range(100):
+    for i in range(1000):
 
         s, a = mdp_algms.forward_runs_prob(
             softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
             T, beta)
-        trajectories.append(s[1:]/2)
+        trajectories.append(s/2)
 
     plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON)
-    plotter.example_trajectories(trajectories, colors[i_efficacy], 5)
+    plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
 
 sns.despine()
 plt.xlabel('time (weeks)')
 plt.ylabel('research hours completed')
 
+plt.savefig(
+    'plots/vectors/basic_discount.svg',
+    format='svg', dpi=300
+)
+
+
 # %%
 # gap between real and assumed efficacies
 
-assumed_efficacies = [0.7, 0.3, 0.2]
-real_efficacy = 1.0
+assumed_efficacies = [0.6, 0.3, 0.2]
+real_efficacy = 0.8
 
 initial_state = 0
 beta = 7
 
-colors = ['indigo', 'tab:blue', 'orange']
-plt.figure(figsize=(5, 4), dpi=100)
+colors = ['hotpink', 'mediumturquoise', 'goldenrod']
+plt.figure(figsize=(5, 4), dpi=300)
 
 for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
 
@@ -118,17 +124,26 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
 
     T_real = task_structure.T_binomial(STATES, ACTIONS, real_efficacy)
 
-    for i in range(5):
+    trajectories = []
+    for i in range(1000):
 
         s, a = mdp_algms.forward_runs_prob(
             softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
             T_real, beta)
-        plt.plot(s/2, color=colors[i_efficacy])
+        trajectories.append(s/2)
 
-        sns.despine()
+    plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON)
+    plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
+
+    sns.despine()
 
     plt.xlabel('time (weeks)')
     plt.ylabel('research hours completed')
+
+plt.savefig(
+    'plots/vectors/basic_gap_efficacys.svg',
+    format='svg', dpi=300
+)
 
 # %%
 # decreasing efficacy
@@ -139,7 +154,7 @@ efficacies = [1.0, 0.5]
 discount_factor = 1
 
 colors = ['indigo', 'tab:blue', 'orange']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
 for i_efficacy, efficacy in enumerate(efficacies):
 
@@ -164,58 +179,48 @@ plt.ylabel('research hours completed')
 
 
 # %%
-# with limits on max number of actions
+# with convexity
+discount_factor = 1.0
+convexitys = [1.1, 1.8]
 
 initial_state = 0
 beta = 7
-max_units = [10, 4]
-discount_factor = 1
 
 colors = ['indigo', 'tab:blue', 'orange']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
+T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
 
-for i_mx, max_unit in enumerate((max_units)):
+for i_c, convexity in enumerate(convexitys):
 
-    actions_lim = []
+    effort_func = task_structure.effort_convex_concave(
+        STATES, ACTIONS, EFFORT_WORK, convexity)
 
-    for state_current in range(STATES_NO):
-
-        if state_current + max_unit <= STATES_NO-1:
-            units = max_unit
-        else:
-            units = STATES_NO-1-state_current
-
-        actions_lim.append(np.arange(units+1))
-
-    reward_func = task_structure.reward_no_immediate(STATES, actions_lim,
-                                                     REWARD_SHIRK)
-
-    effort_func = task_structure.effort(STATES, actions_lim, EFFORT_WORK)
-
-    total_reward_func_last = task_structure.reward_final(STATES, REWARD_THR,
-                                                         REWARD_EXTRA)
-
-    # total reward= reward+effort
     total_reward_func = []
     for state_current in range(len(STATES)):
 
         total_reward_func.append(reward_func[state_current]
                                  + effort_func[state_current])
 
-    T = task_structure.T_binomial(STATES, actions_lim, EFFICACY)
-
     V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
-        STATES, actions_lim, HORIZON, discount_factor,
+        STATES, ACTIONS, HORIZON, discount_factor,
         total_reward_func, total_reward_func_last, T)
 
-    for i in range(5):
+    trajectories = []
+    for i in range(1000):
+
         s, a = mdp_algms.forward_runs_prob(
-            softmax_policy, Q_values, actions_lim, initial_state, HORIZON,
-            STATES, T, beta)
-        plt.plot(s/2, color=colors[i_mx])
+            softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
+            T, beta)
+        trajectories.append(s/2)
 
-    sns.despine()
+    plotter.sausage_plots(trajectories, colors[i_c], HORIZON)
+    plotter.example_trajectories(trajectories, colors[i_c], 1.5, 3)
 
+sns.despine()
 plt.xlabel('time (weeks)')
 plt.ylabel('research hours completed')
+plt.savefig(
+    'plots/vectors/basic_discount.svg',
+    format='svg', dpi=300
+)

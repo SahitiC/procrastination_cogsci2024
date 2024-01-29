@@ -1,0 +1,27 @@
+intro
+%The definition of procrastination is varied but most include some or all of the following factors: delay of actions and work, irrational, needless,
+unintended (in the sense of self-control failures).  (steel, %solomon and rothblum, )
+%Psychologists have captured them in questionnaires to find procrastinators in various questionnaires ...
+%they find correlations with personality traits which point at various possible causal mechanisms
+%worth noting that procrastination happens in a variety of task structures -- and not all can be explained by the same mechanism and 
+(important factors in task structure)  
+%there has also been an attempt at unification of mechanisms: TMT, discounting
+%however no attempt to integrate observed diversity into a systematic classification; we aim to develop a theoretical framework that
+identifies several possible types and routes to them 
+%further there is some limited work trying to find evidence for mechanisms from experimental data but they are mostly limited to discounting 
+explanations; here we show that atleast one explanation other than discounting/ inconsistent discounting can explain working patterns in an
+academic 'task' in real life. 
+
+%discussion
+% previous explanations depend on discounting, but we suggest some other ones -- refer to taxonomy at this point; first attempt to see whether different
+mechanisms can explain procrastination
+%procrastination can be from rational or irrational causes, not just irrational and still be bad. even with irrational types, 
+%task is not controlled, so there might be a lot of conditions not accounted for
+%we do not fit, there are multiple explanations for each trajectory
+%there are explanations other than effects of discounting: not considered before
+%some simplifications: efficacy, actions available (some research units required commitment of 1, 1.5 or 2 hrs)
+%are we modelling procrastination or time allocation
+%we made some assumptions about some parameters in absence of exact knowledge: distribution of available units in time, interest
+rewards stats, extra reward value, 
+%peiyuan thesis also try to explain various completion patterns in another dataset using the effects of exponential discounting, we go even beyond
+this and suggest other explanations

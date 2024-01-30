@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 mpl.rc('text', usetex=False)
 
@@ -27,13 +27,13 @@ def legends():
 # plot trajectories
 
 
-def sausage_plots(trajectories, color, horizon):
+def sausage_plots(trajectories, color, horizon, alpha):
     mean = np.mean(trajectories, axis=0)
     error = np.std(trajectories, axis=0)
     plt.plot(mean, color=color)
     plt.fill_between(np.arange(horizon+1),
                      mean-error, mean+error,
-                     alpha=0.1, color=color)
+                     alpha=alpha, color=color)
 
 
 def example_trajectories(trajectories, color, lwidth, number):

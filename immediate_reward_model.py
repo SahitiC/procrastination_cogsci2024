@@ -5,7 +5,7 @@ import plotter
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
 # %%
@@ -89,13 +89,13 @@ for i_dis, discount_factor in enumerate(discount_factors):
             T, beta)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_dis], HORIZON)
+    plotter.sausage_plots(trajectories, colors[i_dis], HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_dis], 1.5, 3)
 
 sns.despine()
-
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
 
 plt.savefig(
     'plots/vectors/no_delay_discounts.svg',
@@ -148,7 +148,7 @@ for i_exp, exponent in enumerate(exponents):
             T, beta)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_exp], HORIZON)
+    plotter.sausage_plots(trajectories, colors[i_exp], HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_exp], 1.5, 3)
 
 sns.despine()
@@ -188,13 +188,13 @@ for i in range(1000):
         T, beta)
     trajectories.append(s/2)
 
-plotter.sausage_plots(trajectories, colors[i_exp+1], HORIZON)
+plotter.sausage_plots(trajectories, colors[i_exp+1], HORIZON, 0.2)
 plotter.example_trajectories(trajectories, colors[i_exp+1], 1.5, 3)
 
 sns.despine()
-
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
 
 plt.savefig(
     'plots/vectors/no_delay_convexity.svg',

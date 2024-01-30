@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib as mpl
 import seaborn as sns
 import ast
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
 
@@ -34,7 +34,8 @@ for label in set(data_relevant['labels']):
                      alpha=0.5)
     sns.despine()
     plt.xlabel('time (weeks)')
-    plt.ylabel('research hours completed')
+    plt.xticks([0, 7, 15])
+    plt.ylabel('research hours \n completed')
     plt.savefig(
         f'plots/vectors/cluster_{label}.svg',
         format='svg', dpi=300

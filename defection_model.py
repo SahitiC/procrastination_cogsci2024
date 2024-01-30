@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 import seaborn as sns
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
 # %%
@@ -72,9 +72,9 @@ cmap = mpl.colormaps['winter']
 sns.heatmap(policy_init_state, linewidths=.5, cmap=cmap, cbar=True)
 ax.set_xlabel('timestep')
 ax.set_ylabel('horizon')
-ax.tick_params()
+ax.tick_params(axis='x', labelrotation=90)
 colorbar = ax.collections[0].colorbar
-colorbar.set_label('actions: amount of work', rotation=270, labelpad=15)
+colorbar.set_label('actions:\n no. of units', rotation=270, labelpad=25)
 
 plt.savefig(
     'plots/vectors/defections_policy.svg',
@@ -120,12 +120,13 @@ for i_d, discount_factor_cost in enumerate(discount_factors_cost):
             HORIZON, STATES, T, beta)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_d], HORIZON)
+    plotter.sausage_plots(trajectories, colors[i_d], HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_d], 1.5, 3)
 
 sns.despine()
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
 
 plt.savefig(
     'plots/vectors/defections_traj.svg',

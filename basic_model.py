@@ -5,7 +5,7 @@ import plotter
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
 # %%
@@ -64,7 +64,7 @@ for state_current in range(len(STATES)):
 # %%
 # variation with discount and efficacy
 
-discount_factor = 0.9
+discount_factor = 1.0
 efficacies = [1.0, 0.6, 0.3]
 
 initial_state = 0
@@ -89,15 +89,16 @@ for i_efficacy, efficacy in enumerate(efficacies):
             T, beta)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON)
+    plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
 
 sns.despine()
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
 
 plt.savefig(
-    'plots/vectors/basic_discount.svg',
+    'plots/vectors/basic_no_discount.svg',
     format='svg', dpi=300
 )
 
@@ -132,13 +133,13 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
             T_real, beta)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON)
+    plotter.sausage_plots(trajectories, colors[i_efficacy], HORIZON, 0.3)
     plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
 
     sns.despine()
-
+    plt.xticks([0, 7, 15])
     plt.xlabel('time (weeks)')
-    plt.ylabel('research hours completed')
+    plt.ylabel('research hours \n completed')
 
 plt.savefig(
     'plots/vectors/basic_gap_efficacys.svg',
@@ -214,13 +215,14 @@ for i_c, convexity in enumerate(convexitys):
             T, beta)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_c], HORIZON)
+    plotter.sausage_plots(trajectories, colors[i_c], HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_c], 1.5, 3)
 
 sns.despine()
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
 plt.savefig(
-    'plots/vectors/basic_discount.svg',
+    'plots/vectors/basic_discount_conv.svg',
     format='svg', dpi=300
 )

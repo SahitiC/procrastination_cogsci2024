@@ -5,7 +5,7 @@ import task_structure
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 2
 
 # %%
@@ -132,7 +132,7 @@ initial_state = 0
 beta = 7
 
 colors = ['indigo', 'tab:blue']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
 reward_interests = [2.0, 0.2]
 
@@ -149,7 +149,7 @@ for i_ri, reward_interest in enumerate(reward_interests):
         STATES, ACTIONS, HORIZON, DISCOUNT_FACTOR,
         total_reward_func, total_reward_func_last, T)
 
-    for i in range(5):
+    for i in range(3):
         s, a = mdp_algms.forward_runs_prob(
             softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
             T, beta)
@@ -174,7 +174,7 @@ V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
     STATES, ACTIONS, HORIZON, discount_factor,
     total_reward_func, total_reward_func_last, T)
 
-for i in range(5):
+for i in range(3):
     s, a = mdp_algms.forward_runs_prob(
         softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
         T, beta)
@@ -183,15 +183,21 @@ for i in range(5):
     plt.plot(s_unit/2, color='orange')
 
 sns.despine()
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
+
+plt.savefig(
+    'plots/vectors/no_commit_discount.svg',
+    format='svg', dpi=300,  bbox_inches='tight'
+)
 
 # %%
 # for switchy transitions
 reward_interest = 2.0
 efficacy = 0.5
 colors = ['hotpink', 'mediumturquoise', 'goldenrod']
-plt.figure(figsize=(5, 4), dpi=100)
+plt.figure(figsize=(5, 4), dpi=300)
 
 T = get_transitions_interest_states(STATES, STATES_NO, ACTIONS_BASE,
                                     efficacy, P_STAY, 1-P_STAY)
@@ -225,5 +231,11 @@ for i in range(10):
     plt.plot(series[i], color=colors[labels[i]])
 
 sns.despine()
+plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours completed')
+plt.ylabel('research hours \n completed')
+
+plt.savefig(
+    'plots/vectors/no_commit_switchy.svg',
+    format='svg', dpi=300,  bbox_inches='tight'
+)

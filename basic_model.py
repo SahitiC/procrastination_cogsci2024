@@ -65,7 +65,7 @@ for state_current in range(len(STATES)):
 # variation with discount and efficacy
 
 discount_factor = 1.0
-efficacies = [1.0, 0.6, 0.3]
+efficacies = [0.98, 0.6, 0.3]
 
 initial_state = 0
 beta = 7

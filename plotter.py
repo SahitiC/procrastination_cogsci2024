@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 24
+mpl.rcParams['font.size'] = 16
 mpl.rcParams['lines.linewidth'] = 3
 mpl.rc('text', usetex=False)
 

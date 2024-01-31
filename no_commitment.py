@@ -36,7 +36,7 @@ ACTIONS.extend(ACTIONS_BASE)
 
 HORIZON = 15  # no. of weeks for task
 DISCOUNT_FACTOR = 1.0  # discounting factor
-EFFICACY = 0.6  # self-efficacy (probability of progress for each unit)
+EFFICACY = 0.5  # self-efficacy (probability of progress for each unit)
 P_STAY = 0.95  # probability of switching between reward states
 
 # utilities :
@@ -195,7 +195,7 @@ plt.savefig(
 # %%
 # for switchy transitions
 reward_interest = 2.0
-efficacy = 0.5
+efficacy = 0.6
 colors = ['hotpink', 'mediumturquoise', 'goldenrod']
 plt.figure(figsize=(5, 4), dpi=300)
 

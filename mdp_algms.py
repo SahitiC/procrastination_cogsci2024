@@ -2,7 +2,7 @@
 script contains functions for algorithms used to find optimal policy in MDPs
 The algorithms are based on dynamic programming. They cover various scenarios:
 single or multiple discount factors, finite or infinite horizons, does rewrad
-dependon the next state etc.
+depend on the next state etc.
 """
 
 import numpy as np
@@ -347,61 +347,6 @@ def find_optimal_policy_diff_discount_factors(
         Q_values_full.append(Q_values)
 
     return V_opt_full, policy_opt_full, Q_values_full
-
-
-def find_optimal_policy_diff_discount_factors_brute_force(
-        states, actions, horizon, discount_factor_reward, discount_factor_cost,
-        reward_func, cost_func, reward_func_last, cost_func_last, T):
-    """
-    brute force algorithm for finding optimal policy at each time step with
-    different discount factors for rewards and efforts (this is particular to a
-    simple mdp with two states and only one of them has a choice in actions)
-    """
-
-    # to store optimal values for all time steps
-    V_opt_bf = []
-    # to store collection of all optimal policies from each timestep onwards
-    policy_opt_bf = []
-
-    # optimal values for rest of timesteps
-    for i_timestep in range(horizon):
-
-        # find optimal v and policy for i_timestep
-        v_opt_bf = [-np.inf, -np.inf]
-        pol_opt_bf = []
-
-        # generate all combinations of policies (for state=0 with 2 possible
-        # actions) for i_timestep+1's
-        policy_list = list(
-            map(list, itertools.product([0, 1], repeat=i_timestep+1)))
-
-        # evaluate each policy
-        for i_policy, policy in enumerate(policy_list):
-
-            # policy for state = 1 is all 0's, append this to policy for
-            # state=0 for all timesteps
-            policy_all = np.vstack((np.array(policy), np.zeros(len(policy),
-                                                               dtype=int)))
-
-            # positive and negative returns for all states
-            v_r, v_c = policy_eval_diff_discount_factors(
-                states, i_timestep, reward_func_last, cost_func_last,
-                reward_func, cost_func, T, discount_factor_reward,
-                discount_factor_cost, policy_all
-            )
-
-            # find opt policy for state = 0, no need for state=1
-            # (as only one action available)
-            if v_r[0, 0] + v_c[0, 0] > v_opt_bf[0]:
-
-                v_opt_bf[0] = v_r[0, 0] + v_c[0, 0]
-                v_opt_bf[1] = v_r[1, 0] + v_c[1, 0]
-                pol_opt_bf = policy_all
-
-        V_opt_bf.append(np.array(v_opt_bf))
-        policy_opt_bf.append(np.array([pol_opt_bf]))
-
-    return V_opt_bf, policy_opt_bf
 
 
 # generate returns from policy

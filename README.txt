@@ -1,5 +1,4 @@
-this repo reproduces analyses and plots from the cogsci paper: 
-Optimal and sub-optimal temporal decisions can explain procrastination in a real-world task (Chebolu and Dayan, 2024)
+
 
 files:
 

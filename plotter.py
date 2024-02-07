@@ -28,6 +28,10 @@ def legends():
 
 
 def sausage_plots(trajectories, color, horizon, alpha):
+    """
+    inputs: some number of trjectories, color for plots, length of horizon,
+    alpha value for std shaded region
+    """
     mean = np.mean(trajectories, axis=0)
     error = np.std(trajectories, axis=0)
     plt.plot(mean, color=color)
@@ -37,7 +41,10 @@ def sausage_plots(trajectories, color, horizon, alpha):
 
 
 def example_trajectories(trajectories, color, lwidth, number):
-
+    """
+    inputs: some number of trjectories, color for plots, width of lines,
+    number of trajectories to plot
+    """
     for i in range(number):
         plt.plot(trajectories[i], color=color,
                  linewidth=lwidth, linestyle='dashed')

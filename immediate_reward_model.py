@@ -1,66 +1,46 @@
-import seaborn as sns
 import mdp_algms
 import task_structure
 import plotter
+import constants
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
+import seaborn as sns
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
 # %%
-
-
-def deterministic_policy(a):
-    p = np.where(a == np.max(a), 1, 0)
-    return p / sum(p)
-
-
-def softmax_policy(a, beta):
-    c = a - np.max(a)
-    p = np.exp(beta*c) / np.sum(np.exp(beta*c))
-    return p
-
-# %%
 # set parameters
 
-
-# states of markov chain
-STATES_NO = 22+1  # 22 one extra state for completing nothing
-STATES = np.arange(STATES_NO)
-
-# allow as many units as possible based on state
-ACTIONS = [np.arange(STATES_NO-i) for i in range(STATES_NO)]
-
-HORIZON = 15  # no. of weeks for task
 DISCOUNT_FACTOR = 0.9  # discounting factor
 EFFICACY = 0.8  # self-efficacy (probability of progress for each unit)
 
 # utilities :
 REWARD_THR = 4.0  # reward per unit at threshold (14 units)
 REWARD_EXTRA = REWARD_THR/8  # reward per unit after threshold upto 22 units
-REWARD_SHIRK = 0.1
-EFFORT_WORK = -0.3
+
 
 # %%
 # define environment and reward structure
 # rewards as soon as 14 credits are hit
 
 reward_func = task_structure.reward_threshold(
-    STATES, ACTIONS, REWARD_SHIRK, REWARD_THR, REWARD_EXTRA)
+    constants.STATES, constants.ACTIONS, constants.REWARD_SHIRK, REWARD_THR,
+    REWARD_EXTRA, constants.THR, constants.STATES_NO)
 
-effort_func = task_structure.effort(STATES, ACTIONS, EFFORT_WORK)
+effort_func = task_structure.effort(
+    constants.STATES, constants.ACTIONS, constants.EFFORT_WORK)
 
-total_reward_func_last = np.zeros(len(STATES))
+total_reward_func_last = np.zeros(len(constants.STATES))
 
 # total reward= reward+effort
 total_reward_func = []
-for state_current in range(len(STATES)):
+for state_current in range(len(constants.STATES)):
 
     total_reward_func.append(reward_func[state_current]
                              + effort_func[state_current])
 
-T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
+T = task_structure.T_binomial(constants.STATES, constants.ACTIONS, EFFICACY)
 
 # %%
 # base policy with single discount factor
@@ -68,28 +48,29 @@ T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
 discount_factors = [1.0, 0.9]
 
 initial_state = 0
-beta = 7
 
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
 for i_dis, discount_factor in enumerate(discount_factors):
 
-    T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
+    T = task_structure.T_binomial(
+        constants.STATES, constants.ACTIONS, EFFICACY)
 
     V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
-        STATES, ACTIONS, HORIZON, discount_factor,
-        total_reward_func, total_reward_func_last, T)
+        constants.STATES, constants.ACTIONS, constants.HORIZON,
+        discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
     for i in range(1000):
 
         s, a = mdp_algms.forward_runs_prob(
-            softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
-            T, beta)
+            task_structure.softmax_policy, Q_values, constants.ACTIONS,
+            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.BETA)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_dis], HORIZON, 0.2)
+    plotter.sausage_plots(trajectories, colors[i_dis], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_dis], 1.5, 3)
 
 sns.despine()
@@ -109,7 +90,6 @@ plt.savefig(
 EXPONENT = 2.0  # to make effort function more convex
 
 initial_state = 0
-beta = 7
 
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
@@ -120,35 +100,38 @@ exponents = [1.5, 2.2]
 for i_exp, exponent in enumerate(exponents):
 
     reward_func = task_structure.reward_threshold(
-        STATES, ACTIONS, REWARD_SHIRK, REWARD_THR, REWARD_EXTRA)
+        constants.STATES, constants.ACTIONS, constants.REWARD_SHIRK,
+        REWARD_THR, REWARD_EXTRA, constants.THR, constants.STATES_NO)
 
-    effort_func = task_structure.effort_convex_concave(STATES, ACTIONS,
-                                                       EFFORT_WORK, exponent)
+    effort_func = task_structure.effort_convex_concave(
+        constants.STATES, constants.ACTIONS, constants.EFFORT_WORK, exponent)
 
-    total_reward_func_last = np.zeros(len(STATES))
+    total_reward_func_last = np.zeros(len(constants.STATES))
 
     # total reward = reward+effort
     total_reward_func = []
-    for state_current in range(len(STATES)):
+    for state_current in range(len(constants.STATES)):
 
         total_reward_func.append(reward_func[state_current]
                                  + effort_func[state_current])
 
-    T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
+    T = task_structure.T_binomial(
+        constants.STATES, constants.ACTIONS, EFFICACY)
 
     V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
-        STATES, ACTIONS, HORIZON, discount_factor,
-        total_reward_func, total_reward_func_last, T)
+        constants.STATES, constants.ACTIONS, constants.HORIZON,
+        discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
     for i in range(1000):
 
         s, a = mdp_algms.forward_runs_prob(
-            softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
-            T, beta)
+            task_structure.softmax_policy, Q_values, constants.ACTIONS,
+            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.BETA)
         trajectories.append(s/2)
 
-    plotter.sausage_plots(trajectories, colors[i_exp], HORIZON, 0.2)
+    plotter.sausage_plots(trajectories, colors[i_exp], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_exp], 1.5, 3)
 
 sns.despine()
@@ -160,35 +143,36 @@ discount_factor = 0.9
 exponent = 2.2
 
 reward_func = task_structure.reward_threshold(
-    STATES, ACTIONS, REWARD_SHIRK, REWARD_THR, REWARD_EXTRA)
+    constants.STATES, constants.ACTIONS, constants.REWARD_SHIRK, REWARD_THR,
+    REWARD_EXTRA, constants.THR, constants.STATES_NO)
 
-effort_func = task_structure.effort_convex_concave(STATES, ACTIONS,
-                                                   EFFORT_WORK, exponent)
+effort_func = task_structure.effort_convex_concave(
+    constants.STATES, constants.ACTIONS, constants.EFFORT_WORK, exponent)
 
-total_reward_func_last = np.zeros(len(STATES))
+total_reward_func_last = np.zeros(len(constants.STATES))
 
 # total reward = reward+effort
 total_reward_func = []
-for state_current in range(len(STATES)):
+for state_current in range(len(constants.STATES)):
 
     total_reward_func.append(reward_func[state_current]
                              + effort_func[state_current])
 
-T = task_structure.T_binomial(STATES, ACTIONS, EFFICACY)
+T = task_structure.T_binomial(constants.STATES, constants.ACTIONS, EFFICACY)
 
 V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
-    STATES, ACTIONS, HORIZON, discount_factor,
+    constants.STATES, constants.ACTIONS, constants.HORIZON, discount_factor,
     total_reward_func, total_reward_func_last, T)
 
 trajectories = []
 for i in range(1000):
 
     s, a = mdp_algms.forward_runs_prob(
-        softmax_policy, Q_values, ACTIONS, initial_state, HORIZON, STATES,
-        T, beta)
+        task_structure.softmax_policy, Q_values, constants.ACTIONS,
+        initial_state, constants.HORIZON, constants.STATES, T, constants.BETA)
     trajectories.append(s/2)
 
-plotter.sausage_plots(trajectories, colors[i_exp+1], HORIZON, 0.2)
+plotter.sausage_plots(trajectories, colors[i_exp+1], constants.HORIZON, 0.2)
 plotter.example_trajectories(trajectories, colors[i_exp+1], 1.5, 3)
 
 sns.despine()

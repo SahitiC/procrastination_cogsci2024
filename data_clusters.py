@@ -13,7 +13,7 @@ mpl.rcParams['lines.linewidth'] = 3
 # pre-processing and clustering
 # already clustered data is saved as csv, no need to run this agian
 
-data = pd.read_csv('zhang_ma/FollowUpStudymatrixDf_finalpaper.csv')
+data = pd.read_csv('FollowUpStudymatrixDf_finalpaper.csv')
 
 data_relevant = data.dropna(subset=['delta progress'])
 data_relevant = data_relevant.reset_index(drop=True)
@@ -30,6 +30,37 @@ for i in range(len(data_relevant)):
         ast.literal_eval(data_relevant['cumulative progress'][i]))
     cumulative_normalised.append(temp/data_relevant['Total credits'][i])
 data_relevant['cumulative progress normalised'] = cumulative_normalised
+
+# represent delta progress in weeks
+semester_length = len(ast.literal_eval(data_relevant['delta progress'][0]))
+semester_length_weeks = round(semester_length/7)
+delta_progress_weeks = []
+plt.figure()
+
+# delta progress week wise
+for i in range(len(data_relevant)):
+
+    temp = ast.literal_eval(data_relevant['delta progress'][i])
+    temp_week = []
+    for i_week in range(semester_length_weeks):
+
+        temp_week.append(
+            sum(temp[i_week*7: (i_week+1)*7]) * 1.0)
+
+    assert sum(temp_week) == data_relevant['Total credits'][i]
+    delta_progress_weeks.append(temp_week)
+    plt.plot(temp_week)
+data_relevant['delta_progress_weeks'] = delta_progress_weeks
+
+# get cumulative progress from delta progress
+cumulative_progress_weeks = []
+for i in range(len(data_relevant)):
+
+    cumulative_progress_weeks.append(
+        list(np.cumsum(
+            ast.literal_eval(data_relevant['delta_progress_weeks'][i])))
+    )
+data_relevant['cumulative_progress_weeks'] = cumulative_progress_weeks
 
 # inertia vs cluster number
 inertia = []
@@ -58,17 +89,6 @@ data_relevant['labels'] = labels
 
 data_relevant = pd.read_csv('data_relevant_clustered.csv')
 
-# get cumulative progress from delta progress
-cumulative_progress_weeks = []
-for i in range(len(data_relevant)):
-
-    cumulative_progress_weeks.append(
-        np.cumsum(
-            ast.literal_eval(data_relevant['delta_progress_weeks'][i])))
-
-data_relevant['cumulative_progress_weeks'] = cumulative_progress_weeks
-
-# %%
 # plot clustered data
 
 for label in set(data_relevant['labels']):
@@ -79,13 +99,13 @@ for label in set(data_relevant['labels']):
         if data_relevant['labels'][i] == label:
             # ast.literal_eval(data_relevant['delta progress'][i])
             # data_relevant['cumulative progress normalised'][i]
-            plt.plot(data_relevant['cumulative_progress_weeks'][i],
-                     alpha=0.5)
+            plt.plot(ast.literal_eval(
+                data_relevant['cumulative_progress_weeks'][i]),
+                alpha=0.5)
     sns.despine()
     plt.xlabel('time (weeks)')
     plt.xticks([0, 7, 15])
     plt.ylabel('research hours \n completed')
     plt.savefig(
         f'plots/vectors/cluster_{label}.svg',
-        format='svg', dpi=300
-    )
+        format='svg', dpi=300)

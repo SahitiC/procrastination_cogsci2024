@@ -2,12 +2,21 @@ import mdp_algms
 import task_structure
 import plotter
 import constants
+import compute_distance
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 import seaborn as sns
+import pandas as pd
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
+
+# %%
+# import real data (clustered)
+data = pd.read_csv('data_relevant_clustered.csv')
+cumulative_progress_weeks = compute_distance.literal_eval(
+    data, 'cumulative_progress_weeks')
+labels = np.array(data['labels'])
 
 # %%
 # set parameters
@@ -73,6 +82,11 @@ for i_dis, discount_factor in enumerate(discount_factors):
     plotter.sausage_plots(trajectories, colors[i_dis], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_dis], 1.5, 3)
 
+    # compare data clusters to simulated trajectories
+    # ignore first entry of simulated trajectory (as it is always 0)
+    print(compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+
 sns.despine()
 plt.xticks([0, 7, 15])
 plt.xlabel('time (weeks)')
@@ -134,6 +148,9 @@ for i_exp, exponent in enumerate(exponents):
     plotter.sausage_plots(trajectories, colors[i_exp], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_exp], 1.5, 3)
 
+    print(compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+
 sns.despine()
 
 
@@ -174,6 +191,9 @@ for i in range(1000):
 
 plotter.sausage_plots(trajectories, colors[i_exp+1], constants.HORIZON, 0.2)
 plotter.example_trajectories(trajectories, colors[i_exp+1], 1.5, 3)
+
+print(compute_distance.avg_distance_all_clusters(
+    cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
 
 sns.despine()
 plt.xticks([0, 7, 15])

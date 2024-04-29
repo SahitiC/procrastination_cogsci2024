@@ -2,11 +2,21 @@ import mdp_algms
 import task_structure
 import plotter
 import constants
+import compute_distance
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
+import pandas as pd
+import numpy as np
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
+
+# %%
+# import real data (clustered)
+data = pd.read_csv('data_relevant_clustered.csv')
+cumulative_progress_weeks = compute_distance.literal_eval(
+    data, 'cumulative_progress_weeks')
+labels = np.array(data['labels'])
 
 # %%
 # instantiate MDP
@@ -42,7 +52,7 @@ for state_current in range(len(constants.STATES)):
 # %%
 # variation with discount and efficacy
 
-discount_factor = 1.0
+discount_factor = 0.9
 efficacies = [0.98, 0.6, 0.3]
 
 initial_state = 0
@@ -71,6 +81,11 @@ for i_efficacy, efficacy in enumerate(efficacies):
     plotter.sausage_plots(
         trajectories, colors[i_efficacy], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
+
+    # compare data clusters to simulated trajectories
+    # ignore first entry of simulated trajectory (as it is always 0)
+    print(compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
 
 sns.despine()
 plt.xticks([0, 7, 15])
@@ -118,6 +133,9 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
     plotter.sausage_plots(
         trajectories, colors[i_efficacy], constants.HORIZON, 0.3)
     plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
+
+    print(compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
 
     sns.despine()
     plt.xticks([0, 7, 15])
@@ -169,10 +187,14 @@ for i_c, convexity in enumerate(convexitys):
     plotter.sausage_plots(trajectories, colors[i_c], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_c], 1.5, 3)
 
-sns.despine()
-plt.xticks([0, 7, 15])
-plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+    print(compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+
+    sns.despine()
+    plt.xticks([0, 7, 15])
+    plt.xlabel('time (weeks)')
+    plt.ylabel('research hours \n completed')
+
 plt.savefig(
     'plots/vectors/basic_discount_conv.svg',
     format='svg', dpi=300

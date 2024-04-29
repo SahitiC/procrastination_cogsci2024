@@ -228,7 +228,7 @@ def T_binomial_decreasing(states, actions, horizon, efficacy):
 
 def generate_interest_rewards(states, states_no, actions_base,
                               reward_shirk, reward_unit, reward_extra,
-                              effort_work, reward_interest):
+                              effort_work, reward_interest, thr):
     """
     reward structure for case where there are low and high reward super-states
     high reward state = base reward structure + interest rewards
@@ -237,7 +237,7 @@ def generate_interest_rewards(states, states_no, actions_base,
     # base course rewards (threshold of 14 units)
     reward_func_base = reward_threshold(
         states[:int(states_no/2)], actions_base, reward_shirk,
-        reward_unit, reward_extra)
+        reward_unit, reward_extra, thr, states_no)
 
     # immediate interest rewards
     reward_func_interest = reward_immediate(

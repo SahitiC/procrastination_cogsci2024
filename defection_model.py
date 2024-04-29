@@ -107,7 +107,7 @@ for i_d, discount_factor_cost in enumerate(discount_factors_cost):
             task_structure.softmax_policy, effective_Q, constants.ACTIONS,
             initial_state, constants.HORIZON, constants.STATES, T,
             constants.BETA)
-        trajectories.append(s/2)
+        trajectories.append(s)
 
     plotter.sausage_plots(trajectories, colors[i_d], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_d], 1.5, 3)
@@ -119,8 +119,9 @@ for i_d, discount_factor_cost in enumerate(discount_factors_cost):
 
 sns.despine()
 plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/defections_traj.svg',

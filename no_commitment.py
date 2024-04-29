@@ -48,7 +48,7 @@ for i_ri, reward_interest in enumerate(reward_interests):
 
     total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(
         STATES, STATES_NO, ACTIONS_BASE, constants.REWARD_SHIRK, REWARD_UNIT,
-        REWARD_EXTRA, constants.EFFORT_WORK, reward_interest)
+        REWARD_EXTRA, constants.EFFORT_WORK, reward_interest, constants.THR)
 
     V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
         STATES, ACTIONS, constants.HORIZON, DISCOUNT_FACTOR,
@@ -60,7 +60,7 @@ for i_ri, reward_interest in enumerate(reward_interests):
             constants.HORIZON, STATES, T, constants.BETA)
         # convert state values to number of units done
         s_unit = np.where(s > constants.STATES_NO-1, s-constants.STATES_NO, s)
-        plt.plot(s_unit/2, color=colors[i_ri])
+        plt.plot(s_unit, color=colors[i_ri])
 
 
 # low discount factor
@@ -68,12 +68,12 @@ discount_factor = 0.9
 reward_interest = 2.0
 total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(
     STATES, STATES_NO, ACTIONS_BASE, constants.REWARD_SHIRK, REWARD_UNIT,
-    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest)
+    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest, constants.THR)
 
 
 total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(
     STATES, STATES_NO, ACTIONS_BASE, constants.REWARD_SHIRK, REWARD_UNIT,
-    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest)
+    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest, constants.THR)
 
 V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
     STATES, ACTIONS, constants.HORIZON, discount_factor,
@@ -85,12 +85,13 @@ for i in range(3):
         constants.HORIZON, STATES, T, constants.BETA)
     # convert state values to number of units done
     s_unit = np.where(s > 22, s-23, s)
-    plt.plot(s_unit/2, color='orange')
+    plt.plot(s_unit, color='orange')
 
 sns.despine()
 plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/no_commit_discount.svg',
@@ -109,7 +110,7 @@ T = task_structure.get_transitions_interest_states(
 
 total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(
     STATES, STATES_NO, ACTIONS_BASE, constants.REWARD_SHIRK, REWARD_UNIT,
-    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest)
+    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest, constants.THR)
 
 V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
     STATES, ACTIONS, constants.HORIZON, DISCOUNT_FACTOR,
@@ -123,7 +124,7 @@ for i in range(10):
         constants.HORIZON, STATES, T, constants.BETA)
     # convert state values to number of units done
     s_unit = np.where(s > constants.STATES_NO-1, s-constants.STATES_NO, s)
-    series.append(s_unit/2)
+    series.append(s_unit)
     timeseries_to_cluster.append(s_unit/(s_unit[-1]*2))
 
 # cluster timeseries
@@ -136,8 +137,9 @@ for i in range(10):
 
 sns.despine()
 plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/no_commit_switchy.svg',

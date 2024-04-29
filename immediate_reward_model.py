@@ -77,7 +77,7 @@ for i_dis, discount_factor in enumerate(discount_factors):
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
             initial_state, constants.HORIZON, constants.STATES, T,
             constants.BETA)
-        trajectories.append(s/2)
+        trajectories.append(s)
 
     plotter.sausage_plots(trajectories, colors[i_dis], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_dis], 1.5, 3)
@@ -89,8 +89,9 @@ for i_dis, discount_factor in enumerate(discount_factors):
 
 sns.despine()
 plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/no_delay_discounts.svg',
@@ -143,7 +144,7 @@ for i_exp, exponent in enumerate(exponents):
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
             initial_state, constants.HORIZON, constants.STATES, T,
             constants.BETA)
-        trajectories.append(s/2)
+        trajectories.append(s)
 
     plotter.sausage_plots(trajectories, colors[i_exp], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_exp], 1.5, 3)
@@ -187,7 +188,7 @@ for i in range(1000):
     s, a = mdp_algms.forward_runs_prob(
         task_structure.softmax_policy, Q_values, constants.ACTIONS,
         initial_state, constants.HORIZON, constants.STATES, T, constants.BETA)
-    trajectories.append(s/2)
+    trajectories.append(s)
 
 plotter.sausage_plots(trajectories, colors[i_exp+1], constants.HORIZON, 0.2)
 plotter.example_trajectories(trajectories, colors[i_exp+1], 1.5, 3)
@@ -197,8 +198,9 @@ print(compute_distance.avg_distance_all_clusters(
 
 sns.despine()
 plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/no_delay_convexity.svg',

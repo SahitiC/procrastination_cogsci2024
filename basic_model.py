@@ -76,7 +76,7 @@ for i_efficacy, efficacy in enumerate(efficacies):
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
             initial_state, constants.HORIZON, constants.STATES, T,
             constants.BETA)
-        trajectories.append(s/2)
+        trajectories.append(s)
 
     plotter.sausage_plots(
         trajectories, colors[i_efficacy], constants.HORIZON, 0.2)
@@ -89,11 +89,13 @@ for i_efficacy, efficacy in enumerate(efficacies):
 
 sns.despine()
 plt.xticks([0, 7, 15])
+# add tick at threshold:
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
-plt.ylabel('research hours \n completed')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
-    'plots/vectors/basic_no_discount.svg',
+    'plots/vectors/basic_discount.svg',
     format='svg', dpi=300
 )
 
@@ -128,7 +130,7 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
             initial_state, constants.HORIZON, constants.STATES, T_real,
             constants.BETA)
-        trajectories.append(s/2)
+        trajectories.append(s)
 
     plotter.sausage_plots(
         trajectories, colors[i_efficacy], constants.HORIZON, 0.3)
@@ -137,10 +139,11 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
     print(compute_distance.avg_distance_all_clusters(
         cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
 
-    sns.despine()
-    plt.xticks([0, 7, 15])
-    plt.xlabel('time (weeks)')
-    plt.ylabel('research hours \n completed')
+sns.despine()
+plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
+plt.xlabel('time (weeks)')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/basic_gap_efficacys.svg',
@@ -182,7 +185,7 @@ for i_c, convexity in enumerate(convexitys):
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
             initial_state, constants.HORIZON, constants.STATES, T,
             constants.BETA)
-        trajectories.append(s/2)
+        trajectories.append(s)
 
     plotter.sausage_plots(trajectories, colors[i_c], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_c], 1.5, 3)
@@ -190,10 +193,11 @@ for i_c, convexity in enumerate(convexitys):
     print(compute_distance.avg_distance_all_clusters(
         cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
 
-    sns.despine()
-    plt.xticks([0, 7, 15])
-    plt.xlabel('time (weeks)')
-    plt.ylabel('research hours \n completed')
+sns.despine()
+plt.xticks([0, 7, 15])
+plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
+plt.xlabel('time (weeks)')
+plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/basic_discount_conv.svg',

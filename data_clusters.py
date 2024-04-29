@@ -99,13 +99,15 @@ for label in set(data_relevant['labels']):
         if data_relevant['labels'][i] == label:
             # ast.literal_eval(data_relevant['delta progress'][i])
             # data_relevant['cumulative progress normalised'][i]
-            plt.plot(ast.literal_eval(
-                data_relevant['cumulative_progress_weeks'][i]),
+            plt.plot(
+                np.array(ast.literal_eval(
+                    data_relevant['cumulative_progress_weeks'][i])) * 2,
                 alpha=0.5)
     sns.despine()
     plt.xlabel('time (weeks)')
     plt.xticks([0, 7, 15])
-    plt.ylabel('research hours \n completed')
+    plt.yticks(list(plt.yticks()[0][1:-1]) + [14])  # add tick at threshold=14
+    plt.ylabel('research units \n completed')
     plt.savefig(
         f'plots/vectors/cluster_{label}.svg',
         format='svg', dpi=300)

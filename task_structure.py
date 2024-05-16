@@ -1,10 +1,9 @@
 """
 Functions for constructing the reward functions and transition matrices for
-Zhang and Ma (2023) NYU study
-also policy functions
+Zhang and Ma (2023) NYU study 
 """
 import numpy as np
-from scipy.stats import binom
+from scipy.special import comb
 
 
 def reward_threshold(states, actions, reward_shirk, reward_thr,
@@ -13,7 +12,8 @@ def reward_threshold(states, actions, reward_shirk, reward_thr,
     reward function when units are rewarded immediately once threshold of
     thr no. of units are hit (compensated at reward_thr per unit) and then
     reward_extra per every extra unit until states_no (max no. of states) units
-    in the course, thr=14 and max no of units = 22
+    in the course, thr=14 and max no of units = 22; reward for shirking (i.e,
+    every 22-action no. of units if a=no. of units worked) is immediate
     """
 
     reward_func = []
@@ -176,6 +176,21 @@ def reward_final(states, reward_thr, reward_extra, thr, states_no):
     return total_reward_func_last
 
 
+def binomial_pmf(n, p, k):
+    """
+    returns binomial probability mass function given p = probability of
+    success and n = number of trials, k = number of successes
+    """
+
+    if not isinstance(n, (int, np.int32)):
+        print(type(n))
+        raise TypeError("Input must be an integer.")
+
+    binomial_prob = comb(n, k) * p**k * (1-p)**(n-k)
+
+    return binomial_prob
+
+
 def T_binomial(states, actions, efficacy):
     """
     transition function as binomial number of successes with
@@ -190,7 +205,7 @@ def T_binomial(states, actions, efficacy):
         for i, action in enumerate(actions[state_current]):
 
             T_temp[action, state_current:state_current+action+1] = (
-                binom(action, efficacy).pmf(np.arange(action+1))
+                binomial_pmf(action, efficacy, np.arange(action+1))
             )
 
         T.append(T_temp)
@@ -215,15 +230,12 @@ def T_binomial_decreasing(states, actions, horizon, efficacy):
             for i, action in enumerate(actions[state_current]):
 
                 T_temp[action, state_current:state_current+action+1] = (
-                    binom(action, efficacy_t).pmf(np.arange(action+1))
+                    binomial_pmf(action, efficacy_t, np.arange(action))
                 )
 
             T_t.append(T_temp)
         T.append(T_t)
     return T
-
-# define reward structure
-# define separately for low and high rewards states and then extend
 
 
 def generate_interest_rewards(states, states_no, actions_base,

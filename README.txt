@@ -2,14 +2,14 @@
 
 files:
 
-1. mdp_algms.py - contains all the functions for algorithms that find the optimal policy in MDPs, based on dynamic programming
+1. mdp_algms.py - functions for algorithms that find the optimal policy in MDPs, based on dynamic programming
 
-2. task_structure.py - contains functions for constructing reward/ effort functions based on various reward schedules and convex/ linear cost functions
+2. task_structure.py - functions for constructing reward/ effort functions based on various reward schedules and convex/ linear cost functions
 and also tranisiton functions based on the transition structure in the different models
 
-3. plotter.py - contains plotting code for:
+3. plotter.py - plotting code for:
  sausage plots which show mean trajectory (and std as shaded region) given trajectories
- specified number of example trajectories 
+ dashed plots of specified number of example trajectories 
 
 4. constants.py - define few shared constants over all the models (states, actions, horizon, effort, shirk reward)
 
@@ -32,8 +32,11 @@ outputs plots and saves svgs to 'plots/vectors/' folder:
 
 11. no_commitment.py - implements model with uncertain interest rewards; reproduces Figure 5 (A,B)
 
+12. compute_distance.py - functions to compute (Euclidean) distance between simulated trajectories from models and data clusters: gives an idea of how well a model 
+(with a specific parameter configuration) 'fits' the data cluster
+
 12. .gitignore - tell git to ignore some local files, please change this based on your local repo
 
 13. requirements.txt - python packages required to run these files
 
-14. plots/ - folder containing svg and png files of plots/ figures in paper
+14. plots/ - folder containing svg and png files of plots and figures in paper

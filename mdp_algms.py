@@ -1,7 +1,7 @@
 """
-script contains functions for algorithms used to find optimal policy in MDPs
+functions for algorithms used to find optimal policy in MDPs
 The algorithms are based on dynamic programming. They cover various scenarios:
-single or multiple discount factors, finite or infinite horizons, does rewrad
+single or multiple discount factors, finite or infinite horizons, does reward
 depend on the next state etc.
 """
 

@@ -58,7 +58,6 @@ Next run the following scripts (10-13) to implement each model type from the pap
    for pip: `pip install -r requirements.txt`\
    for conda: \
    `conda config --add channels conda-forge` \
-   `conda config --set channel-priority strict` \
    `conda install --yes --file requirements.txt` 
 
 ## Citation

@@ -2,7 +2,7 @@
 
 This repository contains code and data for [Optimal and sub-optimal temporal decisions can explain procrastination in a real-world task](https://escholarship.org/uc/item/2mg517js) accepted at the Cognitive Science Society 2024 meeting. 
 
-Authors: Sahiti Chebolu and Peter Dayan
+Authors: [Sahiti Chebolu](https://www.kyb.tuebingen.mpg.de/person/107410/2549) and [Peter Dayan](https://www.mpg.de/12309357/biologische-kybernetik-dayan)
 
 ## Abstract
 Procrastination is a universal phenomenon, with a significantproportion of the population reporting interference and evenharm from such delays.  Why do people put off tasks despitewhat are apparently their best intentions, and why do they de-liberately defer in the face of prospective failure? Past researchshows that procrastination is a heterogeneous construct withpossibly diverse causes. To grapple with the complexity of thetopic, we construct a taxonomy of different types of procrasti-nation and potential sources for each type.  We simulate com-pletion patterns from three broad model types: exponential orinconsistent temporal discounting, and waiting for interestingtasks;  and provide some preliminary evidence, through com-parisons with real-world data,  of the plausibility of multipletypes of, and pathways for, procrastination
@@ -50,14 +50,14 @@ Next run the following scripts (10-13) to implement each model type from the pap
 ## Installation
 
 1. clone repository \
-   for https: 'git clone https://github.com/SahitiC/procrastination_cogsci2024.git' or \
-   for ssh: 'git clone git@github.com:SahitiC/procrastination_cogsci2024.git'
+   for https: `git clone https://github.com/SahitiC/procrastination_cogsci2024.git` or \
+   for ssh: `git clone git@github.com:SahitiC/procrastination_cogsci2024.git`
 2. create and activate python virtual environment using your favourite environment manager (pip, conda etc)
 3. install packages in requirments.txt: \
-   for pip: 'pip install -r requirements.txt'
-   for conda: 'conda config --add channels conda-forge'
-              'conda config --set channel-priority strict'
-              'conda install --yes --file requirements.txt'
+   for pip: `pip install -r requirements.txt`\
+   for conda: `conda config --add channels conda-forge` \
+              `conda config --set channel-priority strict`
+              `conda install --yes --file requirements.txt`
 
 ## Citation
 

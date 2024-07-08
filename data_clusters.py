@@ -1,10 +1,15 @@
+"""
+code for reproducing Figure 1;
+what it does: pre-processs data, cluster data using k-means (and select k),
+plot trajectories cluster-wise
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import matplotlib as mpl
 import seaborn as sns
 import ast
-from tslearn.clustering import TimeSeriesKMeans
+from sklearn.cluster import KMeans
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
@@ -15,6 +20,7 @@ mpl.rcParams['lines.linewidth'] = 3
 
 data = pd.read_csv('FollowUpStudymatrixDf_finalpaper.csv')
 
+# drop nan entries
 data_relevant = data.dropna(subset=['delta progress'])
 data_relevant = data_relevant.reset_index(drop=True)
 
@@ -23,7 +29,7 @@ data_relevant = data_relevant.reset_index(drop=True)
 data_relevant = data_relevant.drop([1, 90, 104])
 data_relevant = data_relevant.reset_index(drop=True)
 
-# normalised cumulative sequence
+# get normalised cumulative progress
 cumulative_normalised = []
 for i in range(len(data_relevant)):
     temp = np.array(
@@ -31,13 +37,11 @@ for i in range(len(data_relevant)):
     cumulative_normalised.append(temp/data_relevant['Total credits'][i])
 data_relevant['cumulative progress normalised'] = cumulative_normalised
 
-# represent delta progress in weeks
+# transform delta progress in weeks from days
 semester_length = len(ast.literal_eval(data_relevant['delta progress'][0]))
 semester_length_weeks = round(semester_length/7)
 delta_progress_weeks = []
 plt.figure()
-
-# delta progress week wise
 for i in range(len(data_relevant)):
 
     temp = ast.literal_eval(data_relevant['delta progress'][i])
@@ -58,30 +62,30 @@ for i in range(len(data_relevant)):
 
     cumulative_progress_weeks.append(
         list(np.cumsum(
-            ast.literal_eval(data_relevant['delta_progress_weeks'][i])))
+            data_relevant['delta_progress_weeks'][i]))
     )
 data_relevant['cumulative_progress_weeks'] = cumulative_progress_weeks
 
-# inertia vs cluster number
+timeseries_to_cluster = np.vstack(
+    data_relevant['cumulative progress normalised'])
+# find and plot inertia vs cluster number
 inertia = []
-for cluster_size in range(15):
-    km = TimeSeriesKMeans(n_clusters=cluster_size+1, n_init=5,
-                          metric="euclidean", verbose=True)
-    timseries_to_cluster = np.vstack(
-        data_relevant['cumulative progress normalised'])
-    labels = km.fit_predict(timseries_to_cluster)
+for cluster_size in range(1, 15):
+    print(cluster_size+1)
+    km = KMeans(n_clusters=cluster_size+1, n_init=3,
+                random_state=0)
+    labels = km.fit_predict(timeseries_to_cluster)
     inertia.append(km.inertia_)
 
+plt.figure(figsize=(8, 6))
 plt.plot(inertia)
-plt.xticks(np.arange(15), labels=np.arange(1, 16))
+plt.xticks(np.arange(14), labels=np.arange(1, 15))
 plt.xlabel('cluster number')
-plt.ylabel('k-means sum of squares')
+plt.ylabel('k-means \n sum of squares')
 
 # pick best cluster number (elbow method) and cluster again
-km = TimeSeriesKMeans(n_clusters=8, n_init=5, metric="euclidean", verbose=True)
-timseries_to_cluster = np.vstack(
-    data_relevant['cumulative progress normalised'])
-labels = km.fit_predict(timseries_to_cluster)
+km = KMeans(n_clusters=8, verbose=True, random_state=1, n_init=5)
+labels = km.fit_predict(timeseries_to_cluster)
 data_relevant['labels'] = labels
 
 # %%

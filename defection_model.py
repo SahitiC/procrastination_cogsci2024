@@ -1,3 +1,9 @@
+"""
+code for reproducing Figure 4 A-B;
+what it does: define MDP for different discount factors for reward and efforts,
+simulate for different configurations of parameters
+"""
+
 import mdp_algms
 import task_structure
 import plotter
@@ -70,7 +76,7 @@ plt.savefig(
 )
 
 # %%
-# solve for policy given task structure
+# trajectroies across different discount factors (for cost)
 discount_factors_cost = [0.9, 0.7, 0.6, 0.5]
 
 initial_state = 0
@@ -80,6 +86,7 @@ plt.figure(figsize=(5, 4), dpi=300)
 
 for i_d, discount_factor_cost in enumerate(discount_factors_cost):
 
+    # full time-inconsistent policy
     V_opt_full, policy_opt_full, Q_values_full = (
         mdp_algms.find_optimal_policy_diff_discount_factors(
             constants.STATES, constants.ACTIONS, constants.HORIZON,

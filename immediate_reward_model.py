@@ -1,3 +1,9 @@
+"""
+code for reproducing Figure 3 A-B;
+what it does: define MDP for exponential discounting with immediate rewards,
+simulate for different configurations of parameters
+"""
+
 import mdp_algms
 import task_structure
 import plotter
@@ -52,7 +58,7 @@ for state_current in range(len(constants.STATES)):
 T = task_structure.T_binomial(constants.STATES, constants.ACTIONS, EFFICACY)
 
 # %%
-# base policy with single discount factor
+# trajectories across discount factors
 
 discount_factors = [1.0, 0.9]
 
@@ -101,6 +107,7 @@ plt.savefig(
 
 # %%
 # what if there is a cost related to the number of units
+# trajectoreis across different convexities
 
 EXPONENT = 2.0  # to make effort function more convex
 

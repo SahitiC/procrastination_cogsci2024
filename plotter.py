@@ -1,3 +1,6 @@
+"""
+code for plotting average and example trajectories reported in the paper
+"""
 import numpy as np
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt

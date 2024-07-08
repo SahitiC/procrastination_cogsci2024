@@ -1,3 +1,9 @@
+"""
+code for reproducing Figure 5 A-B;
+what it does: define MDP for uncertain interesting tasks,
+simulate for different configurations of parameters
+"""
+
 import mdp_algms
 import task_structure
 import constants
@@ -15,7 +21,7 @@ mpl.rcParams['lines.linewidth'] = 2
 STATES_NO = (22+1) * 2  # each state can be high or low rewarding (so, double)
 STATES = np.arange(STATES_NO)
 
-# allow as many units as possible based on state
+# allow as many actions as possible based on state
 ACTIONS_BASE = [np.arange(int(STATES_NO/2-i)) for i in range(int(STATES_NO/2))]
 ACTIONS = ACTIONS_BASE.copy()
 # same actions available for low and high reward states: so repeat
@@ -32,8 +38,7 @@ REWARD_INTEREST = 2.0  # immediate interest rewards on top of course rewards
 
 
 # %%
-# solve for optimal policy
-# when high rewards stay for long
+# trajectories when high rewards stay for long (sticky transitions)
 initial_state = 0
 
 colors = ['indigo', 'tab:blue']
@@ -63,7 +68,7 @@ for i_ri, reward_interest in enumerate(reward_interests):
         plt.plot(s_unit, color=colors[i_ri])
 
 
-# low discount factor
+# with low discount factor
 discount_factor = 0.9
 reward_interest = 2.0
 total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(

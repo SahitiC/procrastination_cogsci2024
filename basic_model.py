@@ -1,3 +1,8 @@
+"""
+code for reproducing Figure 2 A-D;
+what it does: define MDP for exponential discounting with delayed rewards,
+simulate for different configurations of parameters
+"""
 import mdp_algms
 import task_structure
 import plotter
@@ -50,7 +55,7 @@ for state_current in range(len(constants.STATES)):
 
 
 # %%
-# variation with discount and efficacy
+# mean trajectories (with std.) across discount and efficacy
 
 discount_factor = 0.9
 efficacies = [0.98, 0.6, 0.3]
@@ -62,9 +67,11 @@ plt.figure(figsize=(5, 4), dpi=300)
 
 for i_efficacy, efficacy in enumerate(efficacies):
 
+    # define transition probabilities
     T = task_structure.T_binomial(
         constants.STATES, constants.ACTIONS, efficacy)
 
+    # calculate optimal policy
     V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
         constants.STATES, constants.ACTIONS, constants.HORIZON,
         discount_factor, total_reward_func, total_reward_func_last, T)
@@ -82,22 +89,22 @@ for i_efficacy, efficacy in enumerate(efficacies):
         trajectories, colors[i_efficacy], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
 
-    # compare data clusters to simulated trajectories
+    # compare simulated trajectories to data clusters by calculating avg
+    # distance to trajectories of each cluster
     # ignore first entry of simulated trajectory (as it is always 0)
     print(compute_distance.avg_distance_all_clusters(
         cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
 
 sns.despine()
 plt.xticks([0, 7, 15])
-# add tick at threshold:
+# add tick at threshold (14 units):
 plt.yticks(list(plt.yticks()[0][1:-1]) + [constants.THR])
 plt.xlabel('time (weeks)')
 plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/basic_discount.svg',
-    format='svg', dpi=300
-)
+    format='svg', dpi=300)
 
 
 # %%
@@ -147,8 +154,7 @@ plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/basic_gap_efficacys.svg',
-    format='svg', dpi=300
-)
+    format='svg', dpi=300)
 
 
 # %%
@@ -201,5 +207,4 @@ plt.ylabel('research units \n completed')
 
 plt.savefig(
     'plots/vectors/basic_discount_conv.svg',
-    format='svg', dpi=300
-)
+    format='svg', dpi=300)

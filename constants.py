@@ -1,3 +1,6 @@
+"""
+define quantities that are held constant across simulations
+"""
 import numpy as np
 
 # states of markov chain

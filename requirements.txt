@@ -1,7 +1,7 @@
 numpy
 scipy
 matplotlib
-tslearn
+sklearn
 seaborn
 pandas
 ast

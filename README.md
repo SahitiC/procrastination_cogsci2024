@@ -62,7 +62,8 @@ Next run the following scripts (10-13) to implement each model type from the pap
 
 ## Citation
 
-If you found this code or paper helpful, please cite us as: Chebolu, S., & Dayan, P. (2024). Optimal and sub-optimal temporal decisions can explain procrastination in a real-world task. Proceedings of the Annual Meeting of the Cognitive Science Society, 46. Retrieved from <https://escholarship.org/uc/item/2mg517js> 
+If you found this code or paper helpful, please cite us as:\
+Chebolu, S., & Dayan, P. (2024). Optimal and sub-optimal temporal decisions can explain procrastination in a real-world task. Proceedings of the Annual Meeting of the Cognitive Science Society, 46. Retrieved from <https://escholarship.org/uc/item/2mg517js> 
 
 <code>
  @article{chebolu2024optimal, 

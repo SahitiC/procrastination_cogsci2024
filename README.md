@@ -17,7 +17,8 @@ Procrastination is a universal phenomenon, with a significantproportion of the p
 
 4. data_relevant_clustered.csv - contains data with cluster labels
 
-modules containing some helper functions for further steps:
+modules containing some helper functions for further steps: 
+
 5. mdp_algms.py - functions for algorithms that find the optimal policy in MDPs, based on dynamic programming 
 
 6. task_structure.py - functions for constructing reward/ effort functions based on various reward schedules and convex/ linear cost functions
@@ -31,7 +32,7 @@ and also tranisiton functions based on the transition structure in the different
 (with a specific parameter configuration) 'fits' the data cluster
 
 Next run the following scripts (10-13) to implement each model type from the paper; they call modules 1-4 for defining task structure and model params, solving MDP and plotting; output plots and save svgs to 'plots/vectors/' folder: \
-(please note that no random seed was set, so example trajectories might differ from those in the paper but avg plots will be more or less the same)
+(please note that random seed is not set, so example trajectories might differ from those in the paper but avg plots will be about the same) 
 
 10. basic_model.py - implements the model with delayed rewards and common exponential discount factor; reproduces plots in Figure 2 (A-D)
 
@@ -55,9 +56,10 @@ Next run the following scripts (10-13) to implement each model type from the pap
 2. create and activate python virtual environment using your favourite environment manager (pip, conda etc)
 3. install packages in requirments.txt: \
    for pip: `pip install -r requirements.txt`\
-   for conda: `conda config --add channels conda-forge` \
-              `conda config --set channel-priority strict`
-              `conda install --yes --file requirements.txt`
+   for conda: \
+   `conda config --add channels conda-forge` \
+   `conda config --set channel-priority strict` \
+   `conda install --yes --file requirements.txt` 
 
 ## Citation
 

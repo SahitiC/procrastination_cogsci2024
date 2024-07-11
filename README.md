@@ -14,7 +14,8 @@ Procrastination is a universal phenomenon, with a significant proportion of the 
    for ssh: `git clone git@github.com:SahitiC/procrastination_cogsci2024.git`
 2. create and activate python virtual environment using your favourite environment manager (pip, conda etc)
 3. install packages in requirments.txt: \
-   for pip: `pip install -r requirements.txt`\
+   for pip: \
+   `pip install -r requirements.txt` \
    for conda: \
    `conda config --add channels conda-forge` \
    `conda install --yes --file requirements.txt`

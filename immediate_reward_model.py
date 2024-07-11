@@ -67,6 +67,9 @@ initial_state = 0
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
+print("Immediate reward model: average distance between simulated trajectories"
+      + " from each model configuration and each cluster: \n ")
+
 for i_dis, discount_factor in enumerate(discount_factors):
 
     T = task_structure.T_binomial(

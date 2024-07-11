@@ -10,7 +10,7 @@ import constants
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from tslearn.clustering import TimeSeriesKMeans
+from sklearn.cluster import KMeans
 import seaborn as sns
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 2
@@ -133,7 +133,7 @@ for i in range(10):
     timeseries_to_cluster.append(s_unit/(s_unit[-1]*2))
 
 # cluster timeseries
-km = TimeSeriesKMeans(n_clusters=2, n_init=5, metric="euclidean", verbose=True)
+km = KMeans(n_clusters=2, verbose=False, random_state=0, n_init=5)
 timeseries_to_cluster = np.vstack(timeseries_to_cluster)
 labels = km.fit_predict(timeseries_to_cluster)
 

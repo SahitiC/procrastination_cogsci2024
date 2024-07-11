@@ -65,6 +65,9 @@ initial_state = 0
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
+print("Basic model: average distance between simulated trajectories from each"
+      + " model configuration and each cluster: \n ")
+
 for i_efficacy, efficacy in enumerate(efficacies):
 
     # define transition probabilities

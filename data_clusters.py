@@ -53,7 +53,7 @@ for i in range(len(data_relevant)):
 
     assert sum(temp_week) == data_relevant['Total credits'][i]
     delta_progress_weeks.append(temp_week)
-    plt.plot(temp_week)
+
 data_relevant['delta_progress_weeks'] = delta_progress_weeks
 
 # get cumulative progress from delta progress
@@ -71,7 +71,7 @@ timeseries_to_cluster = np.vstack(
 # find and plot inertia vs cluster number
 inertia = []
 for cluster_size in range(1, 15):
-    print(cluster_size+1)
+    print(f'cluster no. = {cluster_size+1}')
     km = KMeans(n_clusters=cluster_size+1, n_init=3,
                 random_state=0)
     labels = km.fit_predict(timeseries_to_cluster)

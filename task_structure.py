@@ -323,7 +323,7 @@ def generate_interest_rewards(states, states_no, actions_base,
 
     # immediate interest rewards
     reward_func_interest = reward_immediate(
-        states[:int(states_no/2)], actions_base, 0, reward_interest,
+        states[:int(states_no/2)], actions_base, reward_shirk,
         reward_interest)
 
     # effort costs

@@ -84,6 +84,9 @@ initial_state = 0
 colors = ['crimson', 'indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
+print("Different discount model: average distance between simulated"
+      + " trajectories from each model configuration and each cluster: \n ")
+
 for i_d, discount_factor_cost in enumerate(discount_factors_cost):
 
     # full time-inconsistent policy

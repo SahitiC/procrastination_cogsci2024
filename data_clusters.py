@@ -13,6 +13,7 @@ from sklearn.cluster import KMeans
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
+SAVE_ONLY = True
 
 # %%
 # pre-processing and clustering
@@ -41,7 +42,6 @@ data_relevant['cumulative progress normalised'] = cumulative_normalised
 semester_length = len(ast.literal_eval(data_relevant['delta progress'][0]))
 semester_length_weeks = round(semester_length/7)
 delta_progress_weeks = []
-plt.figure()
 for i in range(len(data_relevant)):
 
     temp = ast.literal_eval(data_relevant['delta progress'][i])
@@ -115,3 +115,6 @@ for label in set(data_relevant['labels']):
     plt.savefig(
         f'plots/vectors/cluster_{label}.svg',
         format='svg', dpi=300)
+
+if not SAVE_ONLY:
+    plt.show()

@@ -17,6 +17,8 @@ import pandas as pd
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
+SAVE_ONLY = True
+
 # %%
 # import real data (clustered)
 data = pd.read_csv('data_relevant_clustered.csv')
@@ -137,3 +139,6 @@ plt.savefig(
     'plots/vectors/defections_traj.svg',
     format='svg', dpi=300,  bbox_inches='tight'
 )
+
+if not SAVE_ONLY:
+    plt.show()

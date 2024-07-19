@@ -15,6 +15,8 @@ import seaborn as sns
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 2
 
+SAVE_ONLY = True
+
 # %%
 
 # states of markov chain
@@ -150,3 +152,6 @@ plt.savefig(
     'plots/vectors/no_commit_switchy.svg',
     format='svg', dpi=300,  bbox_inches='tight'
 )
+
+if not SAVE_ONLY:
+    plt.show()

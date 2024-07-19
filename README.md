@@ -22,7 +22,7 @@ Procrastination is a universal phenomenon, with a significant proportion of the 
 
 ## Usage
 
-**Please note that random seed is not set (excpet for clustering code), so example trajectories might differ from those in the paper but average plots will be about the same**
+**Please note that random seed is not set (except for clustering code), so example trajectories might differ from those in the paper but average plots will be about the same**
 1. first run the data processing and clustering script to reproduce Figure 1:\
    `python data_clusters.py`
 3. then implement models to reproduce Figures 2-5:
@@ -35,7 +35,7 @@ Procrastination is a universal phenomenon, with a significant proportion of the 
         
 ## Description
 
-1. FollowUpStudymatrixDf_finalpaper.csv - data from [Zhang and Ma 2024](https://www.nature.com/articles/s41598-024-65110-4). Consists of data from 193 students in a pyshology course. For our paper, the columns of interest are 'delta progress' and 'cumulative progress' that contain data about how many hours of experiments each student did per day in the semester
+1. FollowUpStudymatrixDf_finalpaper.csv - data from [Zhang and Ma 2024](https://www.nature.com/articles/s41598-024-65110-4). Consists of data from 193 students in a psychology course. For our paper, the columns of interest are 'delta progress' and 'cumulative progress' that contain data about how many hours of experiments each student did per day in the semester
 
 2. plots/ - folder containing all plots as vector images and final figures in the paper
 
@@ -43,12 +43,11 @@ Procrastination is a universal phenomenon, with a significant proportion of the 
 
 4. data_relevant_clustered.csv - contains data with cluster labels
 
-modules containing some helper functions for further steps: 
+Modules containing some helper functions for further steps: 
 
 5. mdp_algms.py - functions for algorithms that find the optimal policy in MDPs, based on dynamic programming 
 
-6. task_structure.py - functions for constructing reward/ effort functions based on various reward schedules and convex/ linear cost functions
-and also tranisiton functions based on the transition structure in the different models
+6. task_structure.py - functions for constructing reward/ effort functions based on various reward schedules and convex/ linear cost functions and also transition functions based on the transition structure in the different models
 
 7. plotter.py - code for plotting average and example trajectories reported in the paper
 
@@ -57,7 +56,7 @@ and also tranisiton functions based on the transition structure in the different
 9. compute_distance.py - functions to compute (Euclidean) distance between simulated trajectories from models and data clusters: gives an idea of how well a model 
 (with a specific parameter configuration) 'fits' the data cluster
 
-the following scripts (10-13) implement each model type from the paper; they call modules 1-4 for defining task structure and model params, solving MDP and plotting; output plots and save svgs to 'plots/vectors/' folder: 
+The following scripts (10-13) implement each model type from the paper; they call modules 1-4 for defining task structure and model params, solving MDP and plotting; output plots and save SVGs to 'plots/vectors/' folder: 
 
 10. basic_model.py - implements model with delayed rewards and common exponential discount factor; reproduces plots in Figure 2 (A-D)
 

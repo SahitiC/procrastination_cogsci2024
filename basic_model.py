@@ -16,6 +16,8 @@ import numpy as np
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
+SAVE_ONLY = True
+
 # %%
 # import real data (clustered)
 data = pd.read_csv('data_relevant_clustered.csv')
@@ -211,3 +213,6 @@ plt.ylabel('research units \n completed')
 plt.savefig(
     'plots/vectors/basic_discount_conv.svg',
     format='svg', dpi=300)
+
+if not SAVE_ONLY:
+    plt.show()

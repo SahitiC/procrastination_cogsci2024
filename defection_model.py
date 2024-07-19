@@ -86,9 +86,6 @@ initial_state = 0
 colors = ['crimson', 'indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
-print("Different discount model: average distance between simulated"
-      + " trajectories from each model configuration and each cluster: \n ")
-
 for i_d, discount_factor_cost in enumerate(discount_factors_cost):
 
     # full time-inconsistent policy
@@ -126,8 +123,8 @@ for i_d, discount_factor_cost in enumerate(discount_factors_cost):
 
     # compare data clusters to simulated trajectories
     # ignore first entry of simulated trajectory (as it is always 0)
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_defect = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])

@@ -69,9 +69,6 @@ initial_state = 0
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
-print("Immediate reward model: average distance between simulated trajectories"
-      + " from each model configuration and each cluster: \n ")
-
 for i_dis, discount_factor in enumerate(discount_factors):
 
     T = task_structure.T_binomial(
@@ -95,8 +92,8 @@ for i_dis, discount_factor in enumerate(discount_factors):
 
     # compare data clusters to simulated trajectories
     # ignore first entry of simulated trajectory (as it is always 0)
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_discounts = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])
@@ -161,8 +158,8 @@ for i_exp, exponent in enumerate(exponents):
     plotter.sausage_plots(trajectories, colors[i_exp], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_exp], 1.5, 3)
 
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_conv1 = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 
@@ -205,8 +202,8 @@ for i in range(1000):
 plotter.sausage_plots(trajectories, colors[i_exp+1], constants.HORIZON, 0.2)
 plotter.example_trajectories(trajectories, colors[i_exp+1], 1.5, 3)
 
-print(compute_distance.avg_distance_all_clusters(
-    cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+distance_conv2 = compute_distance.avg_distance_all_clusters(
+    cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])

@@ -66,9 +66,6 @@ initial_state = 0
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
-print("Basic model: average distance between simulated trajectories from each"
-      + " model configuration and each cluster: \n ")
-
 for i_efficacy, efficacy in enumerate(efficacies):
 
     # define transition probabilities
@@ -96,8 +93,8 @@ for i_efficacy, efficacy in enumerate(efficacies):
     # compare simulated trajectories to data clusters by calculating avg
     # distance to trajectories of each cluster
     # ignore first entry of simulated trajectory (as it is always 0)
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_no_discount = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])
@@ -122,9 +119,6 @@ initial_state = 0
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
-print("Basic model: average distance between simulated trajectories from each"
-      + " model configuration and each cluster: \n ")
-
 for i_efficacy, efficacy in enumerate(efficacies):
 
     # define transition probabilities
@@ -152,8 +146,8 @@ for i_efficacy, efficacy in enumerate(efficacies):
     # compare simulated trajectories to data clusters by calculating avg
     # distance to trajectories of each cluster
     # ignore first entry of simulated trajectory (as it is always 0)
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_discount = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])
@@ -203,8 +197,8 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
         trajectories, colors[i_efficacy], constants.HORIZON, 0.3)
     plotter.example_trajectories(trajectories, colors[i_efficacy], 1.5, 3)
 
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_eff_gap = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])
@@ -256,8 +250,8 @@ for i_c, convexity in enumerate(convexitys):
     plotter.sausage_plots(trajectories, colors[i_c], constants.HORIZON, 0.2)
     plotter.example_trajectories(trajectories, colors[i_c], 1.5, 3)
 
-    print(compute_distance.avg_distance_all_clusters(
-        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:]))
+    distance_conv = compute_distance.avg_distance_all_clusters(
+        cumulative_progress_weeks, labels, np.array(trajectories)[:, 1:])
 
 sns.despine()
 plt.xticks([0, 7, 15])

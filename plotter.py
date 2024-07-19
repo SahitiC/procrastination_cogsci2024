@@ -54,18 +54,20 @@ def example_trajectories(trajectories, color, lwidth, number):
 
 
 # %%
-custom_lines = [Line2D([0], [0], color='indigo', lw=2),
-                Line2D([0], [0], color='tab:blue', lw=2),
-                Line2D([0], [0], color='orange', lw=2)]
+if __name__ == "__main__":
 
-fig, ax = plt.subplots(figsize=(2, 2), dpi=300)
-ax.axis('off')
-ax.legend(custom_lines, ['0.98',
-                         '0.6',
-                         '0.3'], title=r'$\eta$',
-          frameon=False)
+    custom_lines = [Line2D([0], [0], color='indigo', lw=2),
+                    Line2D([0], [0], color='tab:blue', lw=2),
+                    Line2D([0], [0], color='orange', lw=2)]
 
-plt.savefig(
-    'plots/vectors/basic_legend_efficacy.svg',
-    format='svg', dpi=300,  bbox_inches='tight'
-)
+    fig, ax = plt.subplots(figsize=(2, 2), dpi=300)
+    ax.axis('off')
+    ax.legend(custom_lines, ['0.98',
+                             '0.6',
+                             '0.3'], title=r'$\eta$',
+              frameon=False)
+
+    plt.savefig(
+        'plots/vectors/basic_legend_efficacy.svg',
+        format='svg', dpi=300,  bbox_inches='tight'
+    )

@@ -2,4 +2,5 @@ __pycache__/
 optimaland_0130.pdf
 procrast.docx
 plots/figs.pptx 
-
+.env
+.venv

@@ -100,6 +100,9 @@ km = KMeans(n_clusters=8, verbose=False, random_state=1, n_init=5)
 labels = km.fit_predict(timeseries_to_cluster)
 data_relevant['labels'] = labels
 
+data_relevant['cumulative_progress_weeks'] =\
+    data_relevant['cumulative_progress_weeks'].apply(lambda x: [float(n) for n in x])
+
 # save clustered data
 data_relevant.to_csv('data_relevant_clustered.csv', index=False)
 

@@ -14,6 +14,7 @@ import numpy as np
 import matplotlib as mpl
 import seaborn as sns
 import pandas as pd
+import ast
 mpl.rcParams['font.size'] = 24
 mpl.rcParams['lines.linewidth'] = 3
 
@@ -22,8 +23,8 @@ SAVE_ONLY = True
 # %%
 # import real data (clustered)
 data = pd.read_csv('data_relevant_clustered.csv')
-cumulative_progress_weeks = compute_distance.literal_eval(
-    data, 'cumulative_progress_weeks')
+literal_array = data['cumulative_progress_weeks'].apply(ast.literal_eval)
+cumulative_progress_weeks = np.array(literal_array.tolist())
 labels = np.array(data['labels'])
 
 # %%

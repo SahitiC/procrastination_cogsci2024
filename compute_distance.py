@@ -6,22 +6,6 @@ and each of the clusters
 
 from scipy.spatial import distance_matrix
 import numpy as np
-import ast
-
-
-def literal_eval(data, column_name):
-    """
-    apply ast's literal_eval to each entry in a column in a dataframe
-    ast.literal_eval evaluates a string as list
-    """
-
-    literal_array = []
-    for i in range(len(data)):
-
-        literal_array.append(
-            ast.literal_eval(data[column_name][i]))
-
-    return np.array(literal_array)
 
 
 def avg_distance_clusters(cluster1, cluster2):

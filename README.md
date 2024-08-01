@@ -22,10 +22,11 @@ Procrastination is a universal phenomenon, with a significant proportion of the 
 
 ## Usage
 
-**Please note that random seed is not set (except for clustering code), so example trajectories might differ from those in the paper but average plots will be about the same**
+**Please note that random seed is not set (except for clustering code), so example trajectories might differ from those in the paper but average plots will be about the same. Plots in each figure of the paper are generated separately by this code**
 1. first run the data processing and clustering script to reproduce Figure 1:\
+   (the data clusters do not necessarily appear in the same order as in the paper)\
    `python data_clusters.py`
-3. then implement models to reproduce Figures 2-5:
+2. then implement models to reproduce Figures 2-5:
    <code>
    python basic_model.py
    python immediate_reward_model.py

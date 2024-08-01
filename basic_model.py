@@ -37,7 +37,8 @@ REWARD_THR = 4.0  # reward per unit at threshold (14 units)
 REWARD_EXTRA = REWARD_THR/4  # reward per unit after threshold upto 22 units
 
 # %%
-# reward structure
+# reward structure: with rewards for units only at deadline but immediate
+# shirk rewards and effort costs
 
 reward_func = task_structure.reward_no_immediate(
     constants.STATES, constants.ACTIONS, constants.REWARD_SHIRK)
@@ -62,8 +63,6 @@ for state_current in range(len(constants.STATES)):
 discount_factor = 1.0
 efficacies = [0.98, 0.6, 0.3]
 
-initial_state = 0
-
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
@@ -79,11 +78,11 @@ for i_efficacy, efficacy in enumerate(efficacies):
         discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
             constants.BETA)
         trajectories.append(s)
 
@@ -115,8 +114,6 @@ plt.savefig(
 discount_factor = 0.9
 efficacies = [0.98, 0.6, 0.3]
 
-initial_state = 0
-
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
@@ -132,11 +129,11 @@ for i_efficacy, efficacy in enumerate(efficacies):
         discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
             constants.BETA)
         trajectories.append(s)
 
@@ -168,8 +165,6 @@ plt.savefig(
 assumed_efficacies = [0.6, 0.3, 0.2]
 real_efficacy = 0.8
 
-initial_state = 0
-
 colors = ['hotpink', 'mediumturquoise', 'goldenrod']
 plt.figure(figsize=(5, 4), dpi=300)
 
@@ -186,12 +181,12 @@ for i_efficacy, ass_efficacy in enumerate(assumed_efficacies):
         constants.STATES, constants.ACTIONS, real_efficacy)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T_real,
-            constants.BETA)
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES,
+            T_real, constants.BETA)
         trajectories.append(s)
 
     plotter.sausage_plots(
@@ -217,8 +212,6 @@ plt.savefig(
 discount_factor = 1.0
 convexitys = [1.1, 1.8]
 
-initial_state = 0
-
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
 
@@ -240,11 +233,11 @@ for i_c, convexity in enumerate(convexitys):
         discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
             constants.BETA)
         trajectories.append(s)
 

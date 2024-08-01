@@ -18,3 +18,6 @@ EFFORT_WORK = -0.3  # costs for work
 THR = 14  # threshold number of units for rewards
 
 BETA = 7  # inv temperature for softmax
+
+INITIAL_STATE = 0  # initial state for forward simulations
+N_TRIALS = 1000  # no. of trials to simulate for avg trajectories

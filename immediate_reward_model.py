@@ -58,14 +58,10 @@ for state_current in range(len(constants.STATES)):
     total_reward_func.append(reward_func[state_current]
                              + effort_func[state_current])
 
-T = task_structure.T_binomial(constants.STATES, constants.ACTIONS, EFFICACY)
-
 # %%
 # trajectories across discount factors
 
 discount_factors = [1.0, 0.9]
-
-initial_state = 0
 
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
@@ -80,11 +76,11 @@ for i_dis, discount_factor in enumerate(discount_factors):
         discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
             constants.BETA)
         trajectories.append(s)
 
@@ -111,10 +107,6 @@ plt.savefig(
 # %%
 # what if there is a cost related to the number of units
 # trajectoreis across different convexities
-
-EXPONENT = 2.0  # to make effort function more convex
-
-initial_state = 0
 
 colors = ['indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
@@ -148,11 +140,11 @@ for i_exp, exponent in enumerate(exponents):
         discount_factor, total_reward_func, total_reward_func_last, T)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, Q_values, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
             constants.BETA)
         trajectories.append(s)
 
@@ -193,11 +185,12 @@ V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
     total_reward_func, total_reward_func_last, T)
 
 trajectories = []
-for i in range(1000):
+for _ in range(constants.N_TRIALS):
 
     s, a = mdp_algms.forward_runs_prob(
         task_structure.softmax_policy, Q_values, constants.ACTIONS,
-        initial_state, constants.HORIZON, constants.STATES, T, constants.BETA)
+        constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
+        constants.BETA)
     trajectories.append(s)
 
 plotter.sausage_plots(trajectories, colors[i_exp+1], constants.HORIZON, 0.2)

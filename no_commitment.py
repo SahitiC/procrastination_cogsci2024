@@ -41,7 +41,6 @@ REWARD_INTEREST = 2.0  # immediate interest rewards on top of course rewards
 
 # %%
 # trajectories when high rewards stay for long (sticky transitions)
-initial_state = 0
 
 colors = ['indigo', 'tab:blue']
 plt.figure(figsize=(5, 4), dpi=300)
@@ -61,10 +60,13 @@ for i_ri, reward_interest in enumerate(reward_interests):
         STATES, ACTIONS, constants.HORIZON, DISCOUNT_FACTOR,
         total_reward_func, total_reward_func_last, T)
 
-    for i in range(3):
+    # generate 3 example trajectories (no avg trajectories for this one, since
+    # the trajectories are quite variable for each parameter set)
+    for _ in range(3):
         s, a = mdp_algms.forward_runs_prob(
-            task_structure.softmax_policy, Q_values, ACTIONS, initial_state,
-            constants.HORIZON, STATES, T, constants.BETA)
+            task_structure.softmax_policy, Q_values, ACTIONS,
+            constants.INITIAL_STATE, constants.HORIZON, STATES, T,
+            constants.BETA)
         # convert state values to number of units done
         s_unit = np.where(s > constants.STATES_NO-1, s-constants.STATES_NO, s)
         plt.plot(s_unit, color=colors[i_ri])
@@ -73,10 +75,6 @@ for i_ri, reward_interest in enumerate(reward_interests):
 # with low discount factor
 discount_factor = 0.9
 reward_interest = 2.0
-total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(
-    STATES, STATES_NO, ACTIONS_BASE, constants.REWARD_SHIRK, REWARD_UNIT,
-    REWARD_EXTRA, constants.EFFORT_WORK, reward_interest, constants.THR)
-
 
 total_reward_func, total_reward_func_last = task_structure.generate_interest_rewards(
     STATES, STATES_NO, ACTIONS_BASE, constants.REWARD_SHIRK, REWARD_UNIT,
@@ -86,10 +84,10 @@ V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
     STATES, ACTIONS, constants.HORIZON, discount_factor,
     total_reward_func, total_reward_func_last, T)
 
-for i in range(3):
+for _ in range(3):
     s, a = mdp_algms.forward_runs_prob(
-        task_structure.softmax_policy, Q_values, ACTIONS, initial_state,
-        constants.HORIZON, STATES, T, constants.BETA)
+        task_structure.softmax_policy, Q_values, ACTIONS,
+        constants.INITIAL_STATE, constants.HORIZON, STATES, T, constants.BETA)
     # convert state values to number of units done
     s_unit = np.where(s > 22, s-23, s)
     plt.plot(s_unit, color='orange')
@@ -109,7 +107,7 @@ plt.savefig(
 # for switchy transitions
 reward_interest = 2.0
 efficacy = 0.6
-colors = ['hotpink', 'gray']
+colors = ['gray', 'hotpink']
 plt.figure(figsize=(5, 4), dpi=300)
 
 T = task_structure.get_transitions_interest_states(
@@ -125,10 +123,10 @@ V_opt, policy_opt, Q_values = mdp_algms.find_optimal_policy_prob_rewards(
 
 series = []
 timeseries_to_cluster = []
-for i in range(10):
+for _ in range(10):
     s, a = mdp_algms.forward_runs_prob(
-        task_structure.softmax_policy, Q_values, ACTIONS, initial_state,
-        constants.HORIZON, STATES, T, constants.BETA)
+        task_structure.softmax_policy, Q_values, ACTIONS,
+        constants.INITIAL_STATE, constants.HORIZON, STATES, T, constants.BETA)
     # convert state values to number of units done
     s_unit = np.where(s > constants.STATES_NO-1, s-constants.STATES_NO, s)
     series.append(s_unit)

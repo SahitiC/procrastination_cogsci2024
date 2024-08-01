@@ -79,13 +79,12 @@ plt.savefig(
 )
 
 # %%
-# trajectroies across different discount factors (for cost)
-discount_factors_cost = [0.9, 0.7, 0.6, 0.5]
-
-initial_state = 0
+# trajectories across different discount factors (for cost)
 
 colors = ['crimson', 'indigo', 'tab:blue', 'orange']
 plt.figure(figsize=(5, 4), dpi=300)
+
+discount_factors_cost = [0.9, 0.7, 0.6, 0.5]
 
 for i_d, discount_factor_cost in enumerate(discount_factors_cost):
 
@@ -111,11 +110,11 @@ for i_d, discount_factor_cost in enumerate(discount_factors_cost):
         effective_Q.append(np.array(Q_s_temp).T)
 
     trajectories = []
-    for i in range(1000):
+    for _ in range(constants.N_TRIALS):
 
         s, a = mdp_algms.forward_runs_prob(
             task_structure.softmax_policy, effective_Q, constants.ACTIONS,
-            initial_state, constants.HORIZON, constants.STATES, T,
+            constants.INITIAL_STATE, constants.HORIZON, constants.STATES, T,
             constants.BETA)
         trajectories.append(s)
 
